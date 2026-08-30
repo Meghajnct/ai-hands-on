@@ -1,9 +1,12 @@
 import json
 import os
+from pathlib import Path
+
 import requests
 from dotenv import load_dotenv
 
-load_dotenv(override=True)
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(dotenv_path=BASE_DIR / ".env", override=True)
 
 pushover_user = os.getenv("PUSHOVER_USER")
 pushover_token = os.getenv("PUSHOVER_TOKEN")

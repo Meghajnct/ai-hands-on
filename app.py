@@ -1,20 +1,40 @@
+import os
+from pathlib import Path
+
 from openai import OpenAI
 from context import TWIN_SYSTEM_PROMPT
+from rag import retrieve_context
 from tools import tools, handle_tool_calls
 from styles import CSS, JS, EXAMPLES
 from dotenv import load_dotenv
 import gradio as gr
 
-load_dotenv(override=True)
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(dotenv_path=BASE_DIR / ".env", override=True)
+
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise RuntimeError(
+        "OPENAI_API_KEY is not set. Add it to the project .env file or export it in your shell."
+    )
 
 MODEL_NAME = "gpt-5.4-mini"
 
-openai = OpenAI()
+openai = OpenAI(api_key=api_key)
 
-system = [{"role": "system", "content": TWIN_SYSTEM_PROMPT}]
+
+
+
+# [{"role": "system", "content": TWIN_SYSTEM_PROMPT}]
 
 
 def chat(message, history):
+    context = retrieve_context(message)
+    system = [
+        {"role": "system", "content": TWIN_SYSTEM_PROMPT +
+                                      "\n\nRelevant profile context:\n" + context}
+    ]
+
     messages = system + history + [{"role": "user", "content": message}]
     response = openai.chat.completions.create(model=MODEL_NAME, messages=messages, tools=tools)
     while response.choices[0].finish_reason == "tool_calls":
