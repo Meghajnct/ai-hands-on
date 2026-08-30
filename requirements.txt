@@ -2,4 +2,4 @@ requests
 pypdf
 openai
 python-dotenv>=1.2.3
-gradio==5.0.0
+gradio[oauth]==5.0.0
