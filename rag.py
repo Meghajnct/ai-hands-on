@@ -29,3 +29,12 @@ def retrieve_context(question, k=4):
     ).data[0].embedding
     results = collection.query(query_embeddings=[q], n_results=k)
     return "\n\n".join(results["documents"][0])
+
+
+
+# Get one vector and find how many dimensions it has
+
+# collection = vectorstore._collection
+# sample_embedding = collection.get(limit=1, include=["embeddings"])["embeddings"][0]
+# dimensions = len(sample_embedding)
+# print(f"The vectors have {dimensions:,} dimensions")

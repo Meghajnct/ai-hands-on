@@ -32,7 +32,8 @@ try:
             chunks.append(enc.decode(chunk_tokens))
         return chunks
 
-except Exception:
+except Exception as e:
+    print(f"tiktoken not available, using word-based chunking. Error: {e}")
     # fallback to word-based chunking (chunk_size and overlap are word counts)
     def split_into_chunks(text, chunk_size=200, overlap=40, **_):
         """
