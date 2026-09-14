@@ -1,5 +1,4 @@
 from pypdf import PdfReader
-from rag import index_profile
 
 reader = PdfReader("Profile.pdf")
 
@@ -11,8 +10,6 @@ for page in reader.pages:
 
 with open("summary.txt", "r", encoding="utf-8") as f:
     summary = f.read()
-
-index_profile(summary, linkedin)
 
 TWIN_SYSTEM_PROMPT = f"""
 
